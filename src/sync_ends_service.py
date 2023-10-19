@@ -92,38 +92,37 @@ APIs schemas
 
 
 
-    def post_data_to_email(self,data):
+    def post_data_to_email(data):
         smtp_server = 'smtp.gmail.com'
         smtp_port = 587  # Use the appropriate SMTP port
-        sender_email = 'gudhe_varun@srmap.edu.in'
-        sender_password = 'tjiv cxxw iyzs nuho'
-        receiver_email = 'varundeepakchowdary@gmail.com'
+        sender_email = '***********'
+        sender_password = '************'
+        receiver_email = '***********'
         subject = 'Postman API Changes'
-        
+        message=""
         for x in data:
             if x is not None and len(x) > 0:
                 msg = MIMEMultipart()
                 msg['From'] = sender_email
                 msg['To'] = receiver_email
                 msg['Subject'] = subject
-                message = x
-                msg.attach(MIMEText(message, 'plain'))
-                try:
-                    server = smtplib.SMTP(smtp_server, smtp_port)
-                    server.starttls()  # Enable TLS encryption
-                    server.login(sender_email, sender_password)
+                message= message+"\n"+"\n"+x
+        if message is not None:
+            msg.attach(MIMEText(message, 'plain'))
+            try:
+                server = smtplib.SMTP(smtp_server, smtp_port)
+                server.starttls()  # Enable TLS encryption
+                server.login(sender_email, sender_password)
 
-                    # Send the email
-                    server.sendmail(sender_email, receiver_email, msg.as_string())
+                # Send the email
+                server.sendmail(sender_email, receiver_email, msg.as_string())
 
-                    print('Email sent successfully')
-                except Exception as e:
-                    print('Error sending email:', str(e))
-                finally:
-                    server.quit()  
-
-
-     
+                print('Email sent successfully')
+            except Exception as e:
+                print('Error sending email:', str(e))
+            finally:
+                server.quit()  
+        
     def post_data_to_slack(self, data):
         """
         Posts the messages for APIs added, deleted and updated based on the \
